@@ -7,7 +7,7 @@ import os
 # --- 1. ตั้งค่าหน้าเว็บ ---
 st.set_page_config(page_title="Lung Cancer Prediction", layout="wide")
 
-st.title("🫁 Lung Cancer Risk Prediction")
+st.title("🫁 Lung Cancer Severity Assessment")
 st.write("แอปพลิเคชันพยากรณ์ความเสี่ยงโรคมะเร็งปอด")
 
 # --- 2. การจัดการข้อมูล ---
