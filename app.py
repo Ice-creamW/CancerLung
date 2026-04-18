@@ -46,8 +46,6 @@ if df is not None:
 
     def user_input_features():
         # ดึงค่า Min/Max จากข้อมูลจริงมาสร้าง Slider
-        age = st.sidebar.slider("Age (อายุ)", int(df.Age.min()), int(df.Age.max()), 30)
-        gender = st.sidebar.selectbox("Gender (เพศ - 1: ชาย, 2: หญิง)", (1, 2))
         alcohol = st.sidebar.slider("Alcohol use", 1, 8, 4)
         smoking = st.sidebar.slider("Smoking", 1, 8, 3)
         passive_smoker = st.sidebar.slider("Passive Smoker", 1, 8, 2)
