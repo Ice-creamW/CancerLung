@@ -78,11 +78,11 @@ if df is not None:
         res_label = le.inverse_transform(prediction)[0]
         
         st.subheader("🎯 ผลการพยากรณ์")
-        if res_label == 'High':
-            st.error(f"ระดับความเสี่ยง: {res_label}")
+        if res_label == 'High‼':
+            st.error(f"ระดับความเสี่ยง: {res_label} (สูง)")
         elif res_label == 'Medium':
-            st.warning(f"ระดับความเสี่ยง: {res_label}")
+            st.warning(f"ระดับความเสี่ยง: {res_label} (ปานกลาง)")
         else:
-            st.success(f"ระดับความเสี่ยง: {res_label}"
+            st.success(f"ระดับความเสี่ยง: {res_label} (ต่ำ)")
             
     
