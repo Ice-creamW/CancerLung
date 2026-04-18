@@ -85,7 +85,4 @@ if df is not None:
         else:
             st.success(f"ระดับความเสี่ยง: {res_label} (ต่ำ)")
             
-        # แสดงกราฟความน่าจะเป็น
-        st.subheader("📊 ความน่าจะเป็นในแต่ละระดับ (%)")
-        prob_df = pd.DataFrame(prediction_proba, columns=le.classes_)
-        st.bar_chart(prob_df.T)
+    
