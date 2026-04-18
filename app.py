@@ -83,6 +83,6 @@ if df is not None:
         elif res_label == 'Medium':
             st.warning(f"ระดับความเสี่ยง: {res_label} (ปานกลาง)")
         else:
-            st.success(f"ระดับความเสี่ยง: {res_label} (ต่ำ)")
+            st.success(f"ระดับความเสี่ยง: {res_label} ")
             
     
