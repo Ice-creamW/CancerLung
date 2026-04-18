@@ -8,7 +8,7 @@ import os
 st.set_page_config(page_title="Lung Cancer Prediction", layout="wide")
 
 st.title("🫁 Lung Cancer Risk Prediction")
-st.write("แอปพลิเคชันพยากรณ์ความเสี่ยงโรคมะเร็งปอด (Random Forest Model)")
+st.write("แอปพลิเคชันพยากรณ์ความเสี่ยงโรคมะเร็งปอด (ไม่ระบุอายุและเพศ)")
 
 # --- 2. การจัดการข้อมูล ---
 @st.cache_data
@@ -27,9 +27,9 @@ def load_data():
 df = load_data()
 
 if df is not None:
-    # เตรียมข้อมูลสำหรับ Training
-    # ลบคอลัมน์ที่ไม่เกี่ยวข้องกับการพยากรณ์
-    cols_to_drop = ['index', 'Patient Id', 'Level of risk']
+    # --- เตรียมข้อมูลสำหรับ Training ---
+    # ลบคอลัมน์ที่ไม่เกี่ยวข้อง รวมถึง Age และ Gender ตามที่ต้องการ
+    cols_to_drop = ['index', 'Patient Id', 'Age', 'Gender', 'Level of risk']
     X = df.drop([c for c in cols_to_drop if c in df.columns], axis=1)
     y = df['Level of risk']
 
@@ -37,27 +37,24 @@ if df is not None:
     le = LabelEncoder()
     y_encoded = le.fit_transform(y)
 
-    # สร้างและฝึกโมเดล
+    # สร้างและฝึกโมเดล (ใช้เฉพาะฟีเจอร์ที่เหลืออยู่)
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X, y_encoded)
 
     # --- 3. ส่วนของ UI สำหรับผู้ใช้งาน (Sidebar) ---
-    st.sidebar.header("กรอกข้อมูลผู้ป่วย")
+    st.sidebar.header("กรอกข้อมูลอาการและพฤติกรรม")
 
     def user_input_features():
-        # ดึงค่า Min/Max จากข้อมูลจริงมาสร้าง Slider
-        age = st.sidebar.slider("Age (อายุ)", int(df.Age.min()), int(df.Age.max()), 30)
-        gender = st.sidebar.selectbox("Gender (เพศ - 1: ชาย, 2: หญิง)", (1, 2))
-        alcohol = st.sidebar.slider("Alcohol use", 1, 8, 4)
-        smoking = st.sidebar.slider("Smoking", 1, 8, 3)
-        passive_smoker = st.sidebar.slider("Passive Smoker", 1, 8, 2)
-        cough_blood = st.sidebar.slider("Coughing of Blood", 1, 9, 4)
-        fatigue = st.sidebar.slider("Fatigue", 1, 9, 3)
-        wheezing = st.sidebar.slider("Wheezing", 1, 8, 2)
+        # ลบ Slider ของ Age และ Selectbox ของ Gender ออกแล้ว
+        alcohol = st.sidebar.slider("Alcohol use (การดื่มสุรา)", 1, 8, 4)
+        smoking = st.sidebar.slider("Smoking (การสูบบุหรี่)", 1, 8, 3)
+        passive_smoker = st.sidebar.slider("Passive Smoker (รับควันบุหรี่มือสอง)", 1, 8, 2)
+        cough_blood = st.sidebar.slider("Coughing of Blood (ไอเป็นเลือด)", 1, 9, 4)
+        fatigue = st.sidebar.slider("Fatigue (ความเหนื่อยล้า)", 1, 9, 3)
+        wheezing = st.sidebar.slider("Wheezing (เสียงหายใจวี้ด)", 1, 8, 2)
         
+        # ส่งข้อมูลเฉพาะฟีเจอร์ที่ใช้ทำนาย
         data = {
-            'Age': age,
-            'Gender': gender,
             'Alcohol use': alcohol,
             'Smoking': smoking,
             'Passive Smoker': passive_smoker,
@@ -70,22 +67,23 @@ if df is not None:
     input_df = user_input_features()
 
     # --- 4. การแสดงผลการทำนาย ---
-    st.subheader("📋 ข้อมูลที่คุณกรอก")
+    st.subheader("📋 ข้อมูลอาการที่ระบุ")
     st.write(input_df)
 
     if st.button("Prediction"):
+        # ทำนายผลโดยใช้ฟีเจอร์ที่ไม่มี Age และ Gender
         prediction = model.predict(input_df)
         prediction_proba = model.predict_proba(input_df)
         
         res_label = le.inverse_transform(prediction)[0]
         
         st.subheader("🎯 ผลการพยากรณ์")
-        if res_label == 'High':
-            st.error(f"ระดับความเสี่ยง: {res_label}")
+        if res_label == 'High‼':
+            st.error(f"ระดับความเสี่ยง: {res_label} (สูง)")
         elif res_label == 'Medium':
-            st.warning(f"ระดับความเสี่ยง: {res_label}")
+            st.warning(f"ระดับความเสี่ยง: {res_label} (ปานกลาง)")
         else:
-            st.success(f"ระดับความเสี่ยง: {res_label}")
+            st.success(f"ระดับความเสี่ยง: {res_label} (ต่ำ)")
             
         # แสดงกราฟความน่าจะเป็น
         st.subheader("📊 ความน่าจะเป็นในแต่ละระดับ (%)")
