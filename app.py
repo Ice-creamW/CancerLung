@@ -8,7 +8,7 @@ import os
 st.set_page_config(page_title="Lung Cancer Prediction", layout="wide")
 
 st.title("🫁 Lung Cancer Risk Prediction")
-st.write("แอปพลิเคชันพยากรณ์ความเสี่ยงโรคมะเร็งปอด (ไม่ระบุอายุและเพศ)")
+st.write("แอปพลิเคชันพยากรณ์ความเสี่ยงโรคมะเร็งปอด")
 
 # --- 2. การจัดการข้อมูล ---
 @st.cache_data
