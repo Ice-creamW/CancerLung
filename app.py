@@ -54,7 +54,7 @@ if df is not None:
 
     def user_input_features():
         # ลบ Slider ของ Age และ Selectbox ของ Gender ออกแล้ว
-        alcohol = st.sidebar.slider("Alcohol use (การดื่มสุรา)", 1, 8, 4)
+        alcohol = st.sidebar.slider("Alcohol use🍾 (การดื่มสุรา)", 1, 8, 4)
         smoking = st.sidebar.slider("Smoking (การสูบบุหรี่)", 1, 8, 3)
         passive_smoker = st.sidebar.slider("Passive Smoker (รับควันบุหรี่มือสอง)", 1, 8, 2)
         cough_blood = st.sidebar.slider("Coughing of Blood (ไอเป็นเลือด)", 1, 9, 4)
